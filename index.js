@@ -25,8 +25,7 @@ if(resolve.isCore(name)) {
 
 var file = resolve.sync(name, {
   basedir: global ? path.join(process.env.npm_config_root, '../') : process.cwd(), 
-  dirFilter: function (dir, pkg) {
-    if(!pkg) return
+  packageFilter: function (pkg, dir) {
     var l = fs.readdirSync(dir)
     while(l.length) {
       var f = l.shift()
