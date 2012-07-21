@@ -17,7 +17,7 @@ readme resolves your module in the same way as `require()`
 ```
 > readme optimist # for a locally installed module
 
-> readme ./       # for a the current module.
+> readme ./       # for the current module.
 
 > reame readme -g # for a globally installed module.
 ```
