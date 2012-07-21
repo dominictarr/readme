@@ -19,8 +19,8 @@ else
 
 if(resolve.isCore(name)) {
     console.error('detection of core libs not yet supported', name)
-    console.error('pull requests accepted.'
-    process.exit(1))
+    console.error('pull requests accepted.')
+    process.exit(1)
   }
 
 var file = resolve.sync(name, {
