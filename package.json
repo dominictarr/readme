@@ -1,0 +1,31 @@
+{
+  "name": "readme",
+  "version": "0.0.0",
+  "description": "display a module's readme in the terminal",
+  "main": "index.js",
+  "dependencies": {
+    "editor": "~0.0.2",
+    "resolve": "~0.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "readme": "./index.js"
+  },
+  "bundledDependencies": ["editor", "resolve"],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/readme.git"
+  },
+  "keywords": [
+    "man",
+    "npm",
+    "readme",
+    "pager",
+    "less"
+  ],
+  "author": "Dominic Tarr <dominic.tarr@gmail.com> (dominictarr.com)",
+  "license": "BSD"
+}
