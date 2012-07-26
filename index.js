@@ -11,11 +11,16 @@ var global = process.argv[3]
 var dashG = /-g|--global/
 
 if(dashG.test(name))
-  global = name, global = true
+  name = global, global = true
 else if(dashG.test(global))
   global = true
 else
   global = false
+
+if(!name) {
+    console.error('no package specified')
+    process.exit(1)
+  }
 
 if(resolve.isCore(name)) {
     console.error('detection of core libs not yet supported', name)
