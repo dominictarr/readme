@@ -28,16 +28,21 @@ if(resolve.isCore(name)) {
     process.exit(1)
   }
 
-var file = resolve.sync(name, {
-  basedir: global ? path.join(process.env.npm_config_root, '../') : process.cwd(), 
-  packageFilter: function (pkg, dir) {
-    var l = fs.readdirSync(dir)
-    while(l.length) {
-      var f = l.shift()
-      if(/^readme/.test(f.toLowerCase())) {
-        editor(path.join(dir, f), {editor: 'less'}, function (){})
+try {
+  var file = resolve.sync(name, {
+    basedir: global ? path.join(process.env.npm_config_root, '../') : process.cwd(), 
+    packageFilter: function (pkg, dir) {
+      var l = fs.readdirSync(dir)
+      while(l.length) {
+        var f = l.shift()
+        if(/^readme/.test(f.toLowerCase())) {
+          editor(path.join(dir, f), {editor: 'less'}, function (){})
+        }
       }
-    }
-    return true
-  }})
+      return true
+    }})
+} catch(e) {
+  console.error(e.message)
+  process.exit(1)
+}
 
