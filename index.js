@@ -30,7 +30,7 @@ if(resolve.isCore(name)) {
 
 try {
   var file = resolve.sync(name, {
-    basedir: global ? path.join(process.env.npm_config_root, '../') : process.cwd(), 
+    basedir: global ? path.join(__dirname, '../') : process.cwd(), 
     packageFilter: function (pkg, dir) {
       var l = fs.readdirSync(dir)
       while(l.length) {
