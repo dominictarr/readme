@@ -7,6 +7,7 @@ var path = require('path')
 
 var name = process.argv[2]
 var global = process.argv[3]
+var pager = process.env.pager || 'less'
 
 var dashG = /-g|--global/
 
@@ -36,7 +37,7 @@ try {
       while(l.length) {
         var f = l.shift()
         if(/^readme/.test(f.toLowerCase())) {
-          editor(path.join(dir, f), {editor: 'less'}, function (){})
+          editor(path.join(dir, f), {editor: pager}, function (){})
         }
       }
       return true
