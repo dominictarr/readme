@@ -18,7 +18,7 @@ else
   global = false
 
 if(!name) {
-    console.error('no package specified')
+    console.error('usage: readme packagename [-g]')
     process.exit(1)
   }
 
