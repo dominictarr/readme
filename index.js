@@ -7,7 +7,7 @@ var path = require('path')
 
 var name = process.argv[2]
 var global = process.argv[3]
-var pager = process.env.pager || 'less'
+var pager = process.env.PAGER || 'less'
 
 var dashG = /-g|--global/
 
