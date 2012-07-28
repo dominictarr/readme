@@ -30,19 +30,23 @@ if(resolve.isCore(name)) {
   }
 
 try {
+  var found = false
   var file = resolve.sync(name, {
     basedir: global ? path.join(process.execPath, '../../lib') : process.cwd(), 
     packageFilter: function (pkg, dir) {
+      console.log('dir', dir)
       var l = fs.readdirSync(dir)
       while(l.length) {
         var f = l.shift()
         if(/^readme/.test(f.toLowerCase())) {
+          found = true
           editor(path.join(dir, f), {editor: pager}, function (){})
         }
       }
-      return true
+      return pkg
     }})
 } catch(e) {
+  if(found) return
   console.error(e.message)
   process.exit(1)
 }
