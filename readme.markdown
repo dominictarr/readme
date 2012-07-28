@@ -1,6 +1,6 @@
 # readme
 
-retrive a node modules readme from the command line, and pipe it into `less`.
+Retrive a node modules readme from the command line, and pipe it into `less`.
 
 ## Installation
 
@@ -10,7 +10,7 @@ retrive a node modules readme from the command line, and pipe it into `less`.
 
 ## Usage
 
-show the readme for a node module.
+Show the readme for a node module.
 
 readme resolves your module in the same way as `require()`
 
@@ -19,7 +19,7 @@ readme resolves your module in the same way as `require()`
 
 > readme ./       # for the current module.
 
-> reame readme -g # for a globally installed module.
+> readme readme -g # for a globally installed module.
 ```
 
 ## Licence
