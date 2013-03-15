@@ -20,8 +20,11 @@ readme resolves your module in the same way as `require()`
 > readme ./       # for the current module.
 
 > readme readme -g # for a globally installed module.
+
+> readme readme --web # open the project's webpage
+
+> readme readme --gh # open the projects github page
 ```
 
 ## Licence
 
-BSD
