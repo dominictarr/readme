@@ -1,22 +1,16 @@
 #! /usr/bin/env node
 
 var resolve = require('resolve')
-var editor = require('editor')
-var fs = require('fs')
-var path = require('path')
+var editor  = require('editor')
+var fs      = require('fs')
+var path    = require('path')
+var opts    = require('optimist').argv
+var toUrl   = require('github-url').toUrl
+var opener  = require('opener')
 
-var name = process.argv[2]
-var global = process.argv[3]
-var pager = process.env.PAGER || 'less'
-
-var dashG = /-g|--global/
-
-if(dashG.test(name))
-  name = global, global = true
-else if(dashG.test(global))
-  global = true
-else
-  global = false
+var name = opts._.shift()
+var global = opts.g || opts.global
+var pager = process.env.PAGER || opts.pager || 'less'
 
 if(!name) {
     console.error('usage: readme packagename [-g]')
@@ -34,7 +28,15 @@ try {
   var file = resolve.sync(name, {
     basedir: global ? path.join(process.execPath, '../../lib') : process.cwd(), 
     packageFilter: function (pkg, dir) {
-      console.log('dir', dir)
+      if(opts.git || opts.github || opts.gh) {
+        opener(toUrl(pkg.repository))
+        return found = true
+      }
+      if(opts.web) {
+        opener(pkg.homepage || toUrl(pkg.repository) || 'https://npm.im/'+pkg.name)
+        return found = true
+
+      }
       var l = fs.readdirSync(dir)
       while(l.length) {
         var f = l.shift()
