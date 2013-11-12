@@ -1,6 +1,6 @@
 # readme
 
-Retrive a node modules readme from the command line, and pipe it into `less`.
+Retrieve a node module's readme from the command line, and pipe it into `less`.
 
 ## Installation
 
