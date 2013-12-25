@@ -13,8 +13,7 @@ var global = opts.g || opts.global
 var pager = process.env.PAGER || opts.pager || 'less'
 
 if(!name) {
-    console.error('usage: readme packagename [-g]')
-    process.exit(1)
+    name = './'
   }
 
 if(resolve.isCore(name)) {
