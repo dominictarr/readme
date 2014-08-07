@@ -26,5 +26,6 @@ readme resolves your module in the same way as `require()`
 > readme readme --gh # open the projects github page
 ```
 
-## Licence
+## License
 
+[BSD](http://opensource.org/licenses/BSD-2-Clause)
