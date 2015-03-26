@@ -17,10 +17,6 @@
   "bin": {
     "readme": "./index.js"
   },
-  "bundledDependencies": [
-    "editor",
-    "resolve"
-  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/dominictarr/readme.git"
