@@ -7,6 +7,7 @@ var path    = require('path')
 var opts    = require('optimist').argv
 var toUrl   = require('github-url').toUrl
 var opener  = require('opener')
+var rc      = require('rc')
 
 var name = opts._.shift()
 var global = opts.g || opts.global
@@ -24,8 +25,9 @@ if(resolve.isCore(name)) {
 
 try {
   var found = false
+  var prefix = rc('npm').prefix || path.join(process.execPath, '../..')
   var file = resolve.sync(name, {
-    basedir: global ? path.join(process.execPath, '../../lib') : process.cwd(), 
+    basedir: global ? path.join(prefix, 'lib') : process.cwd(),
     packageFilter: function (pkg, dir) {
       if(opts.git || opts.github || opts.gh) {
         opener(toUrl(pkg.repository))
