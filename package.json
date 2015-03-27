@@ -4,9 +4,9 @@
   "description": "display a module's readme in the terminal",
   "main": "index.js",
   "dependencies": {
-    "editor": "~0.0.2",
     "resolve": "~0.2.2",
     "optimist": "~0.3.5",
+    "default-pager": "~1.0.1",
     "github-url": "~1.0.0",
     "opener": "~1.3.0"
   },
@@ -18,7 +18,6 @@
     "readme": "./index.js"
   },
   "bundledDependencies": [
-    "editor",
     "resolve"
   ],
   "repository": {
