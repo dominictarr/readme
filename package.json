@@ -4,7 +4,7 @@
   "description": "display a module's readme in the terminal",
   "main": "index.js",
   "dependencies": {
-    "resolve": "~0.2.2",
+    "resolve": "~1.1.6",
     "optimist": "~0.3.5",
     "default-pager": "~1.0.1",
     "github-url": "~1.0.0",
