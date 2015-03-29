@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 var resolve = require('resolve')
-var editor  = require('editor')
+var pager   = require('default-pager')
 var fs      = require('fs')
 var path    = require('path')
 var opts    = require('optimist').argv
@@ -11,7 +11,6 @@ var rc      = require('rc')
 
 var name = opts._.shift()
 var global = opts.g || opts.global
-var pager = process.env.PAGER || opts.pager || 'less'
 
 if(!name) {
     name = './'
@@ -43,7 +42,7 @@ try {
         var f = l.shift()
         if(/^readme/.test(f.toLowerCase())) {
           found = true
-          editor(path.join(dir, f), {editor: pager}, function (){})
+          fs.createReadStream(path.join(dir, f)).pipe(pager())
         }
       }
       return pkg
