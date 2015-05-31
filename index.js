@@ -8,6 +8,7 @@ var opts    = require('optimist').argv
 var toUrl   = require('github-url').toUrl
 var opener  = require('opener')
 var rc      = require('rc')
+var apidocs = require('node-api-docs')
 
 var name = opts._.shift()
 var global = opts.g || opts.global
@@ -17,9 +18,7 @@ if(!name) {
   }
 
 if(resolve.isCore(name)) {
-    console.error('detection of core libs not yet supported', name)
-    console.error('pull requests accepted.')
-    process.exit(1)
+    return apidocs(name).pipe(pager())
   }
 
 try {
