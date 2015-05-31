@@ -4,7 +4,7 @@ Retrieve a node module's readme from the command line, and pipe it into `less`.
 
 ## Installation
 
-``` 
+```
 > npm install readme -g
 ```
 
@@ -20,6 +20,8 @@ readme resolves your module in the same way as `require()`
 > readme ./       # for the current module.
 
 > readme readme -g # for a globally installed module.
+
+> readme http       # for built-in module
 
 > readme readme --web # open the project's webpage
 
