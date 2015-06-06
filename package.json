@@ -19,6 +19,9 @@
   "bin": {
     "readme": "./index.js"
   },
+  "files": [
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/dominictarr/readme.git"
