@@ -5,7 +5,7 @@ var resolve  = require('resolve')
 var pager    = require('default-pager')
 var fs       = require('fs')
 var path     = require('path')
-var optimist = require('optimist')
+var minimist = require('minimist')
 var toUrl    = require('github-url').toUrl
 var opener   = require('opener')
 var rc       = require('rc')
@@ -49,16 +49,19 @@ var packageUrl = function (pkg, webUrl) {
 
 
 try {
-  var opts = optimist.argv
-  var name = String(opts._.shift()) || './'
+  var opts = minimist(process.argv.slice(2), {
+    boolean: ['global', 'github'],
+    alias: {
+      global: 'g',
+      github: 'gh'
+    }
+  })
 
-  if (opts.g) {
-    opts.global = true
-  }
+  var name = String(opts._.shift()) || './'
 
   if (resolve.isCore(name)) {
     apidocs(name).pipe(pager())
-  } else if (opts.github || opts.gh || opts.web) {
+  } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
   } else {
