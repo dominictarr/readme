@@ -15,9 +15,9 @@ Show the readme for a node module.
 readme resolves your module in the same way as `require()`
 
 ```
-> readme optimist # for a locally installed module
+> readme          # for the current module.
 
-> readme ./       # for the current module.
+> readme optimist # for a locally installed module
 
 > readme readme -g # for a globally installed module.
 

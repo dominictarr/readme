@@ -1,16 +1,17 @@
 #! /usr/bin/env node
 // -*- js2-strict-missing-semi-warning: nil; -*-
 
-var resolve  = require('resolve')
-var pager    = require('default-pager')
+var apidocs  = require('node-api-docs')
+var findRoot = require('find-root')
 var fs       = require('fs')
-var path     = require('path')
-var minimist = require('minimist')
 var help     = require('help-version')(usage()).help
-var toUrl    = require('github-url').toUrl
+var minimist = require('minimist')
 var opener   = require('opener')
 var rc       = require('rc')
-var apidocs  = require('node-api-docs')
+var resolve  = require('resolve')
+var toUrl    = require('github-url').toUrl
+var pager    = require('default-pager')
+var path     = require('path')
 
 
 function usage() {
@@ -39,7 +40,9 @@ var basedir = function (opts) {
 
 
 var packageFile = function (name, opts) {
-  return resolve.sync(path.join(name, 'package.json'), { basedir: basedir(opts) })
+  return name
+    ? resolve.sync(path.join(name, 'package.json'), { basedir: basedir(opts) })
+    : path.join(findRoot(basedir(opts)), 'package.json')
 }
 
 
@@ -90,8 +93,7 @@ try {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
   } else {
-    var pkgFile = name ? packageFile(name, opts) : 'package.json'
-    packageReadme(pkgFile).pipe(pager())
+    packageReadme(packageFile(name, opts)).pipe(pager())
   }
 } catch (e) {
   console.error(e.message)
