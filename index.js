@@ -93,7 +93,14 @@ try {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
   } else {
-    packageReadme(packageFile(name, opts)).pipe(pager())
+    var pkgFile
+    try {
+      pkgFile = packageFile(name, opts)
+    } catch (e) {
+      opts.global = true
+      pkgFile = packageFile(name, opts)
+    }
+    packageReadme(pkgFile).pipe(pager())
   }
 } catch (e) {
   console.error(e.message)
