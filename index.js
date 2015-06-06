@@ -6,10 +6,26 @@ var pager    = require('default-pager')
 var fs       = require('fs')
 var path     = require('path')
 var minimist = require('minimist')
+var help     = require('help-version')(usage()).help
 var toUrl    = require('github-url').toUrl
 var opener   = require('opener')
 var rc       = require('rc')
 var apidocs  = require('node-api-docs')
+
+
+function usage() {
+  return [
+    'Usage:  readme [<option>] [<name>]',
+    '',
+    'With no <name>, display current module\'s readme.',
+    '',
+    'Options:',
+    '  --global, -g    Show readme for a globally installed module.',
+    '  --core, -c      Show readme for a core module.',
+    '  --web           Open project\'s homepage.',
+    '  --github, --gh  Open project\'s GitHub page.'
+  ].join('\n')
+}
 
 
 var basedir = function (opts) {
@@ -49,13 +65,22 @@ var packageUrl = function (pkg, webUrl) {
 
 try {
   var opts = minimist(process.argv.slice(2), {
-    boolean: ['global', 'github', 'core'],
+    boolean: ['global', 'core', 'web', 'github'],
     alias: {
       global: 'g',
-      github: 'gh',
-      core: 'c'
+      core: 'c',
+      github: 'gh'
+    },
+    unknown: function (opt) {
+      if (opt[0] == '-') {
+        help(1)
+      }
     }
   })
+
+  if (opts._.length > 1) {
+    help(1)
+  }
 
   var name = String(opts._.shift() || '')
 
@@ -65,7 +90,7 @@ try {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
   } else {
-    var pkgFile = name ? packageFile(name, opts) : 'package.json';
+    var pkgFile = name ? packageFile(name, opts) : 'package.json'
     packageReadme(pkgFile).pipe(pager())
   }
 } catch (e) {

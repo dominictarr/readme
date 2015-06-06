@@ -21,7 +21,7 @@ readme resolves your module in the same way as `require()`
 
 > readme readme -g # for a globally installed module.
 
-> readme http -c    # for built-in module
+> readme http -c    # for a core module
 
 > readme readme --web # open the project's webpage
 
