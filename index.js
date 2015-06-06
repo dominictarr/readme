@@ -27,9 +27,8 @@ var packageFile = function (name, opts) {
 }
 
 
-var packageReadme = function (name, opts) {
-  var pkg = packageFile(name, opts)
-  var pkgDir = path.dirname(pkg)
+var packageReadme = function (pkgFile) {
+  var pkgDir = path.dirname(pkgFile)
   var readmes = fs.readdirSync(pkgDir).filter(function (filename) {
     return /^readme/.test(filename.toLowerCase())
   })
@@ -58,7 +57,7 @@ try {
     }
   })
 
-  var name = String(opts._.shift()) || './'
+  var name = String(opts._.shift() || '')
 
   if (opts.core) {
     apidocs(name).pipe(pager())
@@ -66,7 +65,8 @@ try {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
   } else {
-    packageReadme(name, opts).pipe(pager())
+    var pkgFile = name ? packageFile(name, opts) : 'package.json';
+    packageReadme(pkgFile).pipe(pager())
   }
 } catch (e) {
   console.error(e.message)
