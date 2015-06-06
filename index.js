@@ -50,16 +50,17 @@ var packageUrl = function (pkg, webUrl) {
 
 try {
   var opts = minimist(process.argv.slice(2), {
-    boolean: ['global', 'github'],
+    boolean: ['global', 'github', 'core'],
     alias: {
       global: 'g',
-      github: 'gh'
+      github: 'gh',
+      core: 'c'
     }
   })
 
   var name = String(opts._.shift()) || './'
 
-  if (resolve.isCore(name)) {
+  if (opts.core) {
     apidocs(name).pipe(pager())
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
