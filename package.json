@@ -4,10 +4,13 @@
   "description": "display a module's readme in the terminal",
   "main": "index.js",
   "dependencies": {
+    "concat-stream": "~1.5.0",
     "default-pager": "~1.0.1",
     "find-root": "~0.1.1",
     "github-url": "~1.2.0",
     "help-version": "~0.2.0",
+    "marked": "~0.3.3",
+    "marked-terminal": "~1.5.0",
     "minimist": "~1.1.1",
     "node-api-docs": "~0.1.0",
     "opener": "~1.3.0",

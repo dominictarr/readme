@@ -1,17 +1,20 @@
 #! /usr/bin/env node
 // -*- js2-strict-missing-semi-warning: nil; -*-
 
-var apidocs  = require('node-api-docs')
-var findRoot = require('find-root')
-var fs       = require('fs')
-var help     = require('help-version')(usage()).help
-var minimist = require('minimist')
-var opener   = require('opener')
-var rc       = require('rc')
-var resolve  = require('resolve')
-var toUrl    = require('github-url').toUrl
-var pager    = require('default-pager')
-var path     = require('path')
+var apidocs        = require('node-api-docs')
+var concat         = require('concat-stream')
+var findRoot       = require('find-root')
+var fs             = require('fs')
+var help           = require('help-version')(usage()).help
+var marked         = require('marked')
+var markedTerminal = require('marked-terminal')
+var minimist       = require('minimist')
+var opener         = require('opener')
+var rc             = require('rc')
+var resolve        = require('resolve')
+var toUrl          = require('github-url').toUrl
+var pager          = require('default-pager')
+var path           = require('path')
 
 
 function usage() {
@@ -24,7 +27,8 @@ function usage() {
     '  --global, -g    Show readme for a globally installed module.',
     '  --core, -c      Show readme for a core module.',
     '  --web           Open project\'s homepage.',
-    '  --github, --gh  Open project\'s GitHub page.'
+    '  --github, --gh  Open project\'s GitHub page.',
+    '  --no-color      Turn off colors.'
   ].join('\n')
 }
 
@@ -73,11 +77,6 @@ try {
       global: 'g',
       core: 'c',
       github: 'gh'
-    },
-    unknown: function (opt) {
-      if (opt[0] == '-') {
-        help(1)
-      }
     }
   })
 
@@ -86,9 +85,10 @@ try {
   }
 
   var name = String(opts._.shift() || '')
+  var readme
 
   if (opts.core) {
-    apidocs(name).pipe(pager())
+    readme = apidocs(name)
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
@@ -100,7 +100,16 @@ try {
       opts.global = true
       pkgFile = packageFile(name, opts)
     }
-    packageReadme(pkgFile).pipe(pager())
+    readme = packageReadme(pkgFile)
+  }
+
+  if (readme) {
+    marked.setOptions({
+      renderer: new markedTerminal()
+    })
+    readme.pipe(concat({ encoding: 'string' }, function (md) {
+      pager().end(marked(md))
+    }))
   }
 } catch (e) {
   console.error(e.message)
