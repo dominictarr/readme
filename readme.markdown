@@ -35,7 +35,7 @@ readme resolves your module in the same way as `require()`
 To install completions, put `completions/readme.fish` file to a directory listed in `$fish_complete_path`.
 
 ```
-$ curl https://raw.github.com/dominictarr/readme/master/completions/readme.fish >~/.config/fish/completions/readme.fish
+$ curl -L https://raw.github.com/dominictarr/readme/master/completions/readme.fish >~/.config/fish/completions/readme.fish
 ```
 
 ## License
