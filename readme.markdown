@@ -28,6 +28,16 @@ readme resolves your module in the same way as `require()`
 > readme readme --gh # open the projects github page
 ```
 
+## Shell completions
+
+`readme` comes with completions for the Fish shell (completions for other shells welcome).
+
+To install completions, put `completions/readme.fish` file to a directory listed in `$fish_complete_path`.
+
+```
+$ curl https://raw.github.com/dominictarr/readme/master/completions/readme.fish >~/.config/fish/completions/readme.fish
+```
+
 ## License
 
 [BSD](http://opensource.org/licenses/BSD-2-Clause)
