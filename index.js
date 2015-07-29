@@ -1,22 +1,23 @@
 #! /usr/bin/env node
 // -*- js2-strict-missing-semi-warning: nil; -*-
 
-var apidocs        = require('node-api-docs')
-var concat         = require('concat-stream')
-var duplexer       = require('duplexer2')
-var findRoot       = require('find-root')
-var fs             = require('fs')
-var help           = require('help-version')(usage()).help
-var marked         = require('marked')
-var markedTerminal = require('marked-terminal')
-var minimist       = require('minimist')
-var opener         = require('opener')
-var rc             = require('rc')
-var resolve        = require('resolve')
-var toUrl          = require('github-url').toUrl
-var pager          = require('default-pager')
-var path           = require('path')
-var through        = require('through2')
+var apidocs            = require('node-api-docs')
+var concat             = require('concat-stream')
+var duplexer           = require('duplexer2')
+var findRoot           = require('find-root')
+var fs                 = require('fs')
+var help               = require('help-version')(usage()).help
+var marked             = require('marked')
+var markedTerminal     = require('marked-terminal')
+var minimist           = require('minimist')
+var opener             = require('opener')
+var rc                 = require('rc')
+var resolve            = require('resolve')
+var toUrl              = require('github-url').toUrl
+var pager              = require('default-pager')
+var pagerSupportsColor = require('pager-supports-color')
+var path               = require('path')
+var through            = require('through2')
 
 
 function usage() {
@@ -72,16 +73,6 @@ var packageUrl = function (pkg, webUrl) {
 }
 
 
-var pagerHasColor = function () {
-  return process.env.PAGER == 'less'
-    && process.env.LESS
-    && process.env.LESS.split(/\s+/).some(function (lessopt) {
-      lessopt = lessopt.toLowerCase()
-      return lessopt == '-r' || lessopt == '--raw-control-chars'
-    })
-}
-
-
 var colorize = function () {
   marked.setOptions({
     renderer: new markedTerminal()
@@ -106,7 +97,7 @@ try {
       github: 'gh'
     },
     default: {
-      color: pagerHasColor()
+      color: pagerSupportsColor()
     }
   })
 
