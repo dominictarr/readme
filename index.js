@@ -72,6 +72,16 @@ var packageUrl = function (pkg, webUrl) {
 }
 
 
+var pagerHasColor = function () {
+  return process.env.PAGER == 'less'
+    && process.env.LESS
+    && process.env.LESS.split(/\s+/).some(function (lessopt) {
+      lessopt = lessopt.toLowerCase()
+      return lessopt == '-r' || lessopt == '--raw-control-chars'
+    })
+}
+
+
 var colorize = function () {
   marked.setOptions({
     renderer: new markedTerminal()
@@ -96,7 +106,7 @@ try {
       github: 'gh'
     },
     default: {
-      color: true
+      color: pagerHasColor()
     }
   })
 
