@@ -3,6 +3,7 @@
 
 var apidocs        = require('node-api-docs')
 var concat         = require('concat-stream')
+var duplexer       = require('duplexer2')
 var findRoot       = require('find-root')
 var fs             = require('fs')
 var help           = require('help-version')(usage()).help
@@ -15,6 +16,7 @@ var resolve        = require('resolve')
 var toUrl          = require('github-url').toUrl
 var pager          = require('default-pager')
 var path           = require('path')
+var through        = require('through2')
 
 
 function usage() {
@@ -28,7 +30,7 @@ function usage() {
     '  --core, -c      Show readme for a core module.',
     '  --web           Open project\'s homepage.',
     '  --github, --gh  Open project\'s GitHub page.',
-    '  --no-color      Turn off colors.'
+    '  --[no-]color    Turn on/off colors.'
   ].join('\n')
 }
 
@@ -70,13 +72,31 @@ var packageUrl = function (pkg, webUrl) {
 }
 
 
+var colorize = function () {
+  marked.setOptions({
+    renderer: new markedTerminal()
+  })
+
+  var input = through(), output = through()
+
+  input.pipe(concat({ encoding: 'string' }, function (md) {
+    output.end(marked(md))
+  }))
+
+  return duplexer(input, output)
+}
+
+
 try {
   var opts = minimist(process.argv.slice(2), {
-    boolean: ['global', 'core', 'web', 'github'],
+    boolean: ['global', 'core', 'web', 'github', 'color'],
     alias: {
       global: 'g',
       core: 'c',
       github: 'gh'
+    },
+    default: {
+      color: true
     }
   })
 
@@ -104,12 +124,12 @@ try {
   }
 
   if (readme) {
-    marked.setOptions({
-      renderer: new markedTerminal()
-    })
-    readme.pipe(concat({ encoding: 'string' }, function (md) {
-      pager().end(marked(md))
-    }))
+    if (opts.color) {
+      readme.pipe(colorize()).pipe(pager())
+    }
+    else {
+      readme.pipe(pager())
+    }
   }
 } catch (e) {
   console.error(e.message)
