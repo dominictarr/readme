@@ -47,14 +47,16 @@ var basedir = function (opts) {
 
 
 var packageFile = function (name, opts) {
-  return name
-    ? resolve.sync(path.join(name, 'package.json'), { basedir: basedir(opts) })
-    : path.join(findRoot(basedir(opts)), 'package.json')
+  return resolve.sync(path.join(name, 'package.json'), { basedir: basedir(opts) })
 }
 
 
-var packageReadme = function (pkgFile) {
-  var pkgDir = path.dirname(pkgFile)
+var currentPackageFile = function (opts) {
+  return path.join(findRoot(basedir(opts)), 'package.json')
+}
+
+
+var packageReadme = function (pkgDir) {
   var readmes = fs.readdirSync(pkgDir).filter(function (filename) {
     return /^readme/.test(filename.toLowerCase())
   })
@@ -113,7 +115,7 @@ try {
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
-  } else {
+  } else if (name) {
     var pkgFile
     try {
       pkgFile = packageFile(name, opts)
@@ -121,7 +123,13 @@ try {
       opts.global = true
       pkgFile = packageFile(name, opts)
     }
-    readme = packageReadme(pkgFile)
+    readme = packageReadme(path.dirname(pkgFile))
+  } else {
+    try {
+      readme = packageReadme(path.dirname(currentPackageFile(opts)))
+    } catch (e) {
+      readme = packageReadme(process.cwd())
+    }
   }
 
   if (readme) {
