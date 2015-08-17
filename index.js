@@ -18,6 +18,7 @@ var pager              = require('default-pager')
 var pagerSupportsColor = require('pager-supports-color')
 var path               = require('path')
 var through            = require('through2')
+var readmeFilenames    = require('readme-filenames')
 
 
 function usage() {
@@ -58,7 +59,7 @@ var currentPackageFile = function (opts) {
 
 var packageReadme = function (pkgDir) {
   var readmes = fs.readdirSync(pkgDir).filter(function (filename) {
-    return /^readme/.test(filename.toLowerCase())
+    return readmeFilenames.indexOf(filename) >= 0
   })
   if (!readmes.length) {
     throw new Error('Readme not found in ' + pkgDir)
