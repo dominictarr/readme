@@ -46,7 +46,12 @@ var basedir = function (opts) {
 
 
 var packageFile = function (name, opts) {
-  return resolve.sync(path.join(name, 'package.json'), { basedir: basedir(opts) })
+  var resolveOpts = { basedir: basedir(opts) }
+
+  // For more clear error message if the package is not found.
+  resolve.sync(name, resolveOpts)
+
+  return resolve.sync(path.join(name, 'package.json'), resolveOpts)
 }
 
 
@@ -119,8 +124,14 @@ try {
     try {
       pkgFile = packageFile(name, opts)
     } catch (e) {
+      var error = e
       opts.global = true
-      pkgFile = packageFile(name, opts)
+      try {
+        pkgFile = packageFile(name, opts)
+      } catch (e) {
+        // Rethrow the original error for more clear error message.
+        throw error
+      }
     }
     readme = packageReadme(path.dirname(pkgFile))
   } else {
