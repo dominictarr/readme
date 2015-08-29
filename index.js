@@ -10,8 +10,8 @@ var help               = require('help-version')(usage()).help
 var marked             = require('marked')
 var markedTerminal     = require('marked-terminal')
 var minimist           = require('minimist')
+var npmPrefix          = require('npm-prefix')
 var opener             = require('opener')
-var rc                 = require('rc')
 var resolve            = require('resolve')
 var toUrl              = require('github-url').toUrl
 var pager              = require('default-pager')
@@ -41,9 +41,7 @@ var basedir = function (opts) {
   if (!opts.global) {
     return process.cwd()
   }
-  var npmrc = rc('npm', null, [])
-  var prefix = npmrc.prefix || path.resolve(process.execPath, '../..')
-  return path.join(prefix, 'lib')
+  return path.join(npmPrefix(), 'lib')
 }
 
 
