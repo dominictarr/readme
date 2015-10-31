@@ -1,6 +1,6 @@
 {
   "name": "readme",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "display a module's readme in the terminal",
   "main": "index.js",
   "dependencies": {
