@@ -46,12 +46,8 @@ var basedir = function (opts) {
 
 
 var packageFile = function (name, opts) {
-  var resolveOpts = { basedir: basedir(opts) }
-
-  // For more clear error message if the package is not found.
-  resolve.sync(name, resolveOpts)
-
-  return resolve.sync(path.join(name, 'package.json'), resolveOpts)
+  return resolve.sync(path.join(name, 'package.json'),
+                      { basedir: basedir(opts) })
 }
 
 
