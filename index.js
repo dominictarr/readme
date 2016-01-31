@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 // -*- js2-strict-missing-semi-warning: nil; -*-
 
-var apidocs            = require('node-api-docs')
 var concat             = require('concat-stream')
 var duplexer           = require('duplexer2')
 var findRoot           = require('find-root')
@@ -19,6 +18,7 @@ var pagerSupportsColor = require('pager-supports-color')
 var path               = require('path')
 var through            = require('through2')
 var readmeFilenames    = require('readme-filenames')
+var iscore             = require('is-core-module')
 
 
 function usage() {
@@ -44,6 +44,7 @@ var basedir = function (opts) {
   return path.join(npmPrefix(), 'lib')
 }
 
+var coredir = path.join(__dirname, 'core')
 
 var packageFile = function (name, opts) {
   return resolve.sync(path.join(name, 'package.json'),
@@ -111,7 +112,7 @@ try {
   var readme
 
   if (opts.core) {
-    readme = apidocs(name)
+    readme = fs.createReadStream(path.join(coredir, name + '.md'))
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
@@ -125,11 +126,15 @@ try {
       try {
         pkgFile = packageFile(name, opts)
       } catch (e) {
-        // Rethrow the original error for more clear error message.
-        throw error
+        if (iscore(name)) {
+          readme = fs.createReadStream(path.join(coredir, name + '.md'))
+        } else {
+          // Rethrow the original error for more clear error message.
+          throw error
+        }
       }
     }
-    readme = packageReadme(path.dirname(pkgFile))
+    if (!readme) readme = packageReadme(path.dirname(pkgFile))
   } else {
     try {
       readme = packageReadme(path.dirname(currentPackageFile(opts)))
