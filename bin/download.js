@@ -3,7 +3,6 @@
 var apidocs = require('node-api-docs')
 var jsonstream = require('jsonstream')
 var through = require('through2')
-var marked = require('marked')
 var mkdirp = require('mkdirp')
 var fs = require('fs')
 var path = require('path')
@@ -16,6 +15,7 @@ apidocs.json('index')
   .pipe(through.obj(function (text, enc, next) {
     var m = /^\[[^\]]+\]\((\S+)\.html\)$/.exec(text)
     if (!m) return next()
+    if (m[1] === 'documentation' || m[1] === 'synopsis') return next()
     var file = m[1] + '.md'
     apidocs(m[1]).pipe(fs.createWriteStream(path.join(coredir, file)))
     next()
