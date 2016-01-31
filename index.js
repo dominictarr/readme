@@ -18,6 +18,7 @@ var pagerSupportsColor = require('pager-supports-color')
 var path               = require('path')
 var through            = require('through2')
 var readmeFilenames    = require('readme-filenames')
+var iscore             = require('is-core-module')
 
 
 function usage() {
@@ -110,7 +111,7 @@ try {
   var name = String(opts._.shift() || '')
   var readme
 
-  if (opts.core) {
+  if (opts.core || iscore(name)) {
     readme = fs.createReadStream(path.join(coredir, name + '.md'))
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
