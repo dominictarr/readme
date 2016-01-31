@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 // -*- js2-strict-missing-semi-warning: nil; -*-
 
-var apidocs            = require('node-api-docs')
 var concat             = require('concat-stream')
 var duplexer           = require('duplexer2')
 var findRoot           = require('find-root')
@@ -44,6 +43,7 @@ var basedir = function (opts) {
   return path.join(npmPrefix(), 'lib')
 }
 
+var coredir = path.join(__dirname, 'core')
 
 var packageFile = function (name, opts) {
   return resolve.sync(path.join(name, 'package.json'),
@@ -111,7 +111,7 @@ try {
   var readme
 
   if (opts.core) {
-    readme = apidocs(name)
+    readme = fs.createReadStream(path.join(coredir, name + '.md'))
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
