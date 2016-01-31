@@ -111,7 +111,7 @@ try {
   var name = String(opts._.shift() || '')
   var readme
 
-  if (opts.core || iscore(name)) {
+  if (opts.core) {
     readme = fs.createReadStream(path.join(coredir, name + '.md'))
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
@@ -126,11 +126,15 @@ try {
       try {
         pkgFile = packageFile(name, opts)
       } catch (e) {
-        // Rethrow the original error for more clear error message.
-        throw error
+        if (iscore(name)) {
+          readme = fs.createReadStream(path.join(coredir, name + '.md'))
+        } else {
+          // Rethrow the original error for more clear error message.
+          throw error
+        }
       }
     }
-    readme = packageReadme(path.dirname(pkgFile))
+    if (!readme) readme = packageReadme(path.dirname(pkgFile))
   } else {
     try {
       readme = packageReadme(path.dirname(currentPackageFile(opts)))
