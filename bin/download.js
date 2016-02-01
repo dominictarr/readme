@@ -17,6 +17,6 @@ apidocs.json('index')
     if (!m) return next()
     if (m[1] === 'documentation' || m[1] === 'synopsis') return next()
     var file = m[1] + '.md'
-    apidocs(m[1]).pipe(fs.createWriteStream(path.join(coredir, file)))
+    apidocs.markdown(m[1]).pipe(fs.createWriteStream(path.join(coredir, file)))
     next()
   }))
