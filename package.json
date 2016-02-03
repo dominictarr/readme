@@ -33,7 +33,8 @@
     "readme": "./index.js"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "bin/"
   ],
   "repository": {
     "type": "git",
