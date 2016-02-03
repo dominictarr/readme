@@ -19,6 +19,8 @@ var path               = require('path')
 var through            = require('through2')
 var readmeFilenames    = require('readme-filenames')
 var iscore             = require('is-core-module')
+var coredocs           = require('node-api-docs')
+var fallbackStream     = require('fallback-stream')
 
 
 function usage() {
@@ -76,6 +78,14 @@ var packageUrl = function (pkg, webUrl) {
 }
 
 
+var coreReadme = function (name) {
+  return fallbackStream([
+    fs.createReadStream(path.join(coredir, name + '.md')),
+    coredocs.markdown(name)
+  ])
+}
+
+
 var colorize = function () {
   marked.setOptions({
     renderer: new markedTerminal()
@@ -112,7 +122,7 @@ try {
   var readme
 
   if (opts.core) {
-    readme = fs.createReadStream(path.join(coredir, name + '.md'))
+    readme = coreReadme(name)
   } else if (opts.github || opts.web) {
     var pkg = require(packageFile(name, opts))
     opener(packageUrl(pkg, opts.web))
@@ -127,7 +137,7 @@ try {
         pkgFile = packageFile(name, opts)
       } catch (e) {
         if (iscore(name)) {
-          readme = fs.createReadStream(path.join(coredir, name + '.md'))
+          readme = coreReadme(name)
         } else {
           // Rethrow the original error for more clear error message.
           throw error

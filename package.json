@@ -7,6 +7,7 @@
     "concat-stream": "~1.5.0",
     "default-pager": "~1.0.1",
     "duplexer2": "~0.1.4",
+    "fallback-stream": "~1.1.0",
     "find-root": "~0.1.1",
     "github-url": "~1.2.0",
     "help-version": "~1.1.0",
