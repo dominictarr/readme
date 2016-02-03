@@ -10,6 +10,8 @@ var path = require('path')
 var coredir = path.join(__dirname, '../core')
 mkdirp.sync(coredir)
 
+console.log('Downloading core docs for offline use...')
+
 apidocs.json('index')
   .pipe(jsonstream.parse(['desc',true,'text']))
   .pipe(through.obj(function (text, enc, next) {
