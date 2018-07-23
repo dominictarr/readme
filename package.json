@@ -27,7 +27,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "bin/download.js"
+    "postinstall": "node bin/download.js"
   },
   "bin": {
     "readme": "./index.js"
