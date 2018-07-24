@@ -21,6 +21,7 @@ var readmeFilenames    = require('readme-filenames')
 var iscore             = require('is-core-module')
 var coredocs           = require('node-api-docs')
 var fallbackStream     = require('fallback-stream')
+var spawnSync          = require('child_process').spawnSync
 
 
 function usage() {
@@ -139,8 +140,10 @@ try {
         if (iscore(name)) {
           readme = coreReadme(name)
         } else {
-          // Rethrow the original error for more clear error message.
-          throw error
+          var res = spawnSync('npm', ['info', name, 'readme'])
+          if (res.status !== 0) throw new Error('Could not find module "' + name + '"')
+          readme = through()
+          readme.end(res.stdout)
         }
       }
     }
